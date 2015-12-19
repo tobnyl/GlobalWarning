@@ -18,12 +18,8 @@ public class AudioManager : MonoBehaviour
 
     public AudioSource AudioPrefab;
 
-    public float lowPitch = 1.0f;
-    public float highPitch = 1.0f;
-    public float minVol = 1.0f;
-    public float maxVol = 1.0f;
+    private List<AudioClip> enemyShoots;
 
-    private List<AudioClip> enemyShoots;    
     public static AudioManager _instance;
     public static AudioManager Instance
     {
@@ -93,9 +89,6 @@ public class AudioManager : MonoBehaviour
     {
         AudioSource audioSource = Instantiate(AudioPrefab, transform.position, transform.rotation) as AudioSource;
         Headache audioSourceObject = audioSource.GetComponent<Headache>();
-
-        audioSource.pitch = Random.Range(lowPitch, highPitch);
-        audioSource.volume = Random.Range(minVol, maxVol);
 
         audioSource.clip = clip;
         audioSource.Play();
