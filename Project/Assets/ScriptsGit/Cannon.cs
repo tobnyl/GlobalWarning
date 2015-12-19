@@ -17,7 +17,6 @@ public class Cannon : MonoBehaviour
 	private float _lastFire;
 
     private AudioSource _audioSource;
-    private AudioManager _audioManager;
 
     private int _startingHealth;
     private int _currentHealth;
@@ -26,21 +25,6 @@ public class Cannon : MonoBehaviour
 
     private List<Color> colors;
     private Color _startColor;
-
-
-    private AudioManager GetAudioManager()
-    {
-        var audioGameObject = GameObject.Find("AudioManager");
-
-        if (audioGameObject != null)
-        {
-            var audioManager = audioGameObject.GetComponent<AudioManager>();
-
-            return audioManager;
-        }
-
-        return null;
-    }
 
     void Start()
     {
@@ -57,10 +41,7 @@ public class Cannon : MonoBehaviour
         _startingHealth = 3;
         _currentHealth = _startingHealth;
         _audioSource = GetComponent<AudioSource>();
-
-        _audioManager = GetAudioManager();
-
-
+        
         if (BulletPrefab == null)
         {
             Debug.LogError("Error: BulletPrefab not assigned");
@@ -76,9 +57,7 @@ public class Cannon : MonoBehaviour
 	{
 		if (Input.GetButton("Fire1") && Time.time > _lastFire)
 		{
-            //_audioSource.Play();
-
-		    _audioManager.PlayerShoot();
+		    AudioManager.Instance.PlayerShoot();
 
 
             _lastFire = Time.time + FireRate;
@@ -99,8 +78,6 @@ public class Cannon : MonoBehaviour
 
         if (_currentHealth < 0)
         {
-            var audioManager = GetAudioManager();
-
             gameObject.SetActive(false);
             Invoke("EnableCannon", DisabledTime);
 
