@@ -70,11 +70,8 @@ public class PlayerHealth : MonoBehaviour
 
     private IEnumerator Flash()
     {
-        //var numberOfFlashes = 2;
         var numberSecondsToWait = 0.05f;
         var enemySpriteRenderer = transform.parent.parent.gameObject.GetComponentInChildren<SpriteRenderer>(); // VERY GREAT CODE...
-
-
 
         for (var i = 0; i < NumberFlashes; i++)
         {

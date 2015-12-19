@@ -91,13 +91,16 @@ public class AudioManager : MonoBehaviour
 
     private void InstantiateAudioSourceAndPlay(AudioClip clip)
     {
-        AudioSource audioSource = Instantiate(AudioPrefab, transform.position, transform.rotation) as AudioSource;
-        Headache audioSourceObject = audioSource.GetComponent<Headache>();
+        AudioSource newAudioSource = Instantiate(AudioPrefab, transform.position, transform.rotation) as AudioSource;
+        newAudioSource.transform.parent = this.transform;
 
-        audioSource.pitch = Random.Range(lowPitch, highPitch);
-        audioSource.volume = Random.Range(minVol, maxVol);
+        DestroyAudioSource audioSourceObject = newAudioSource.GetComponent<DestroyAudioSource>();
+        audioSourceObject.Duration = clip.length;
 
-        audioSource.clip = clip;
-        audioSource.Play();
+        newAudioSource.pitch = Random.Range(lowPitch, highPitch);
+        newAudioSource.volume = Random.Range(minVol, maxVol);
+
+        newAudioSource.clip = clip;
+        newAudioSource.Play();
     }
 }
