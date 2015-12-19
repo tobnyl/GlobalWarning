@@ -9,6 +9,7 @@ public class PlayerHealth : MonoBehaviour
     public Text HpText;
     public Color FlashColor;
     public int NumberFlashes = 2;
+    public SpriteRenderer Earth;
 
     private int _currentHealth;
     private Vector3 _startPosition;
@@ -43,8 +44,6 @@ public class PlayerHealth : MonoBehaviour
         {
             Application.LoadLevel("gameOverScreen");
         }
-
-        Debug.Log(_currentHealth);
     }
 
     private void UpdateHpUiText(int health)
@@ -75,9 +74,9 @@ public class PlayerHealth : MonoBehaviour
 
         for (var i = 0; i < NumberFlashes; i++)
         {
-            enemySpriteRenderer.material.color = FlashColor;
+            Earth.material.color = FlashColor;
             yield return new WaitForSeconds(numberSecondsToWait);
-            enemySpriteRenderer.material.color = Color.white;
+            Earth.material.color = Color.white;
             yield return new WaitForSeconds(numberSecondsToWait);
         }
 

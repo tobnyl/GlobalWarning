@@ -55,7 +55,7 @@ public class EnemyBullet : MonoBehaviour
 		{
 			case "Player":
 			{
-			    Debug.Log ("Player got hit in 2D!");
+			    //Debug.Log ("Player got hit in 2D!");
 
                 PlayerHealth playerHealth = co.gameObject.GetComponent<PlayerHealth>();
                 playerHealth.TakeDamage(20);
@@ -81,7 +81,7 @@ public class EnemyBullet : MonoBehaviour
             }
             case "Cannon":
 			{
-                Debug.Log ("Cannon got hit in 2D!");
+                //Debug.Log ("Cannon got hit in 2D!");
                 Destroy (this.gameObject);
 
                 AudioManager.Instance.PlayerHit();

@@ -211,7 +211,7 @@ public class EnemyMovement : MonoBehaviour
 		switch (co.gameObject.tag) {
 		    case "Player":
 		    {
-			    Debug.Log ("Player got hit in 2D!");
+			    //Debug.Log ("Player got hit in 2D!");
 			    Destroy (this.gameObject);
 
 		        var playerHealth = co.gameObject.GetComponent<PlayerHealth>();
@@ -229,7 +229,7 @@ public class EnemyMovement : MonoBehaviour
             }
             case "Cannon":
 		    {
-			    Debug.Log ("Cannon got hit in 2D!");
+			    //Debug.Log ("Cannon got hit in 2D!");
 			    Destroy (this.gameObject);
 
                 AudioManager.Instance.PlayerHit();
@@ -241,7 +241,7 @@ public class EnemyMovement : MonoBehaviour
 		    }
 		    case "PlayerBullet":
 		    {
-			    Debug.Log ("Player hit enemy");
+			    //Debug.Log ("Player hit enemy");
 			
 			    PlayerBullet playerBullet = co.gameObject.GetComponent<PlayerBullet> ();
 			    TakeDamage (playerBullet.DamageAmount);
@@ -284,8 +284,6 @@ public class EnemyMovement : MonoBehaviour
             Destroy(gameObject);
 		    
 		}
-		
-		Debug.Log(_currentHealth);
 	}
 
 }

@@ -82,8 +82,6 @@ public class Cannon : MonoBehaviour
             Invoke("EnableCannon", DisabledTime);
 
         }
-
-        Debug.Log("Cannon: " + _currentHealth);
     }
 
     void EnableCannon()
