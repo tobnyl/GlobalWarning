@@ -20,34 +20,19 @@ public class AudioManager : MonoBehaviour
 
     private List<AudioClip> enemyShoots;
 
-    public static AudioManager _instance;
-    public static AudioManager Instance
-    {
-        get { return _instance; }
-    }
-
-    void Awake()
-    {
-        if (_instance == null)
-        {
-            _instance = GetComponent<AudioManager>();
-        }
-    }
-
-    // Use this for initialization
-    void Start()
-    {
+	// Use this for initialization
+	void Start ()
+	{
         enemyShoots = new List<AudioClip>();
         enemyShoots.Add(enemyShoot1);
         enemyShoots.Add(enemyShoot2);
         enemyShoots.Add(enemyShoot3);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
 
     public void PlayerShoot()
     {

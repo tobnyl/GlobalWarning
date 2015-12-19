@@ -116,7 +116,7 @@ public class EnemyMovement : MonoBehaviour
 			GameObject bullet = Instantiate (bulletPrefab,transform.position,Quaternion.identity) as GameObject;
 			bullet.GetComponent<EnemyBullet>().Initialize(dummy);
 
-            AudioManager.Instance.EnemyShoot();
+            GetAudioManager().EnemyShoot();
         }
 	}
 
@@ -137,7 +137,7 @@ public class EnemyMovement : MonoBehaviour
         {
             GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
             bullet.GetComponent<EnemyBullet>().VolleyInitialize(dummy.transform.position + new Vector3((Random.Range(-5, 6)), Random.Range(-5, 6)));
-            AudioManager.Instance.EnemyShoot();
+            GetAudioManager().EnemyShoot();
             i--;
             yield return new WaitForSeconds(0.1f);
         }
@@ -157,7 +157,7 @@ public class EnemyMovement : MonoBehaviour
                 j--;
             }
 
-            AudioManager.Instance.EnemyShoot();
+            GetAudioManager().EnemyShoot();
 
             i--;
             j = 36;
@@ -179,7 +179,7 @@ public class EnemyMovement : MonoBehaviour
                 j--;
             }
 
-            AudioManager.Instance.EnemyShoot();
+            GetAudioManager().EnemyShoot();
 
             i--;
             j = 36;
@@ -217,7 +217,7 @@ public class EnemyMovement : MonoBehaviour
 		        var playerHealth = co.gameObject.GetComponent<PlayerHealth>();
                 playerHealth.TakeDamage(10);
 
-                AudioManager.Instance.PlayerHit();
+                GetAudioManager().PlayerHit();
 
                 break;
 		    }
@@ -232,7 +232,7 @@ public class EnemyMovement : MonoBehaviour
 			    Debug.Log ("Cannon got hit in 2D!");
 			    Destroy (this.gameObject);
 
-                AudioManager.Instance.PlayerHit();
+                GetAudioManager().PlayerHit();
 
                 var cannon = co.gameObject.GetComponent<Cannon>();
                 cannon.TakeDamage();
@@ -270,16 +270,32 @@ public class EnemyMovement : MonoBehaviour
 
     }
 
+    private AudioManager GetAudioManager()
+    {
+        var audioGameObject = GameObject.Find("AudioManager");
+
+        if (audioGameObject != null)
+        {
+            var audioManager = audioGameObject.GetComponent<AudioManager>();
+
+            return audioManager;
+        }
+
+        return null;
+    }
+
     public void TakeDamage(int amount)
 	{
 		_currentHealth -= amount;
 		
 		if (_currentHealth <= 0)
 		{
+		    var audioManager = GetAudioManager();
+
 		    var playerKills = Camera.main.GetComponent<PlayerKills>();
             playerKills.UpdateKills();
 
-            AudioManager.Instance.EnemyDies();
+            audioManager.EnemyDies();
 
             Destroy(gameObject);
 		    

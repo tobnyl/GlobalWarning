@@ -41,7 +41,15 @@ public class PlayerHealth : MonoBehaviour
 
         if (_currentHealth <= 0)
         {
+            var audioManager = GetAudioManager();
+
+            //audioManager.EnemyDies();
             Application.LoadLevel("gameOverScreen");
+
+
+
+            //Destroy(gameObject);
+
         }
 
         Debug.Log(_currentHealth);
@@ -84,5 +92,19 @@ public class PlayerHealth : MonoBehaviour
             yield return new WaitForSeconds(numberSecondsToWait);
         }
 
+    }
+
+    private AudioManager GetAudioManager()
+    {
+        var audioGameObject = GameObject.Find("AudioManager");
+
+        if (audioGameObject != null)
+        {
+            var audioManager = audioGameObject.GetComponent<AudioManager>();
+
+            return audioManager;
+        }
+
+        return null;
     }
 }

@@ -59,8 +59,8 @@ public class EnemyBullet : MonoBehaviour
 
                 PlayerHealth playerHealth = co.gameObject.GetComponent<PlayerHealth>();
                 playerHealth.TakeDamage(20);
-
-                AudioManager.Instance.PlayerHit();
+                
+                GetAudioManager().PlayerHit();
 
                 Destroy (this.gameObject);
                 break;
@@ -75,7 +75,7 @@ public class EnemyBullet : MonoBehaviour
                 Destroy(GetComponent<EnemyBullet>());
                 gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.green;
 
-                AudioManager.Instance.ShieldBlock();
+                GetAudioManager().ShieldBlock();
 
                 break;
             }
@@ -84,7 +84,7 @@ public class EnemyBullet : MonoBehaviour
                 Debug.Log ("Cannon got hit in 2D!");
                 Destroy (this.gameObject);
 
-                AudioManager.Instance.PlayerHit();
+                GetAudioManager().PlayerHit();
 
                 var cannon = co.gameObject.GetComponent<Cannon>();
                 cannon.TakeDamage();
@@ -93,4 +93,19 @@ public class EnemyBullet : MonoBehaviour
 			}		
 		}
 	}
+
+    private AudioManager GetAudioManager()
+    {
+        var audioGameObject = GameObject.Find("AudioManager");
+
+        if (audioGameObject != null)
+        {
+            var audioManager = audioGameObject.GetComponent<AudioManager>();
+
+            return audioManager;
+        }
+
+        return null;
+    }
+
 }
