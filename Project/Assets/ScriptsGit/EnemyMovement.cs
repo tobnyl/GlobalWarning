@@ -3,20 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EnemyMovement : MonoBehaviour
-{
-    private float lifeTime = 20;
+{    
 	public GameObject bulletPrefab;
 	public GameObject volleyPrefab;
-	GameObject dummy; //Player
-	float speed = 0.05f;
-	float coolDown = 1f;
-	Vector3 tempV;
-	float number = 0;
-	public int StartingHealth = 100;
-	private int _currentHealth;
-
+    public int StartingHealth = 100;
     public Sprite alienSprite;
     public Sprite meleeSprite;
+    public Color FlashColor;
+    public int NumberFlashes = 2;
+
+    private Vector3 _direction;
+    GameObject dummy; //Player
+    private float lifeTime = 20;
+    float speed = 0.05f;
+	float coolDown = 1f;
+	Vector3 tempV;
+	float number = 0;	
+	private int _currentHealth;
 
     delegate void EnemyBehaviour();
 	EnemyBehaviour enemyBehaviour;
@@ -24,15 +27,9 @@ public class EnemyMovement : MonoBehaviour
     delegate IEnumerator FiringPattern();
     FiringPattern firingPattern;
 
-    private AudioSource _audioSource;
-
-    public Color FlashColor;
-    public int NumberFlashes = 2;
-    public Vector3 direction;
 
     void Start()
     {
-        _audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -41,24 +38,18 @@ public class EnemyMovement : MonoBehaviour
         lifeTime -= Time.deltaTime;
         if (lifeTime <= 0)
             Destroy(gameObject);
-        // Vector3 screenPos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-
-        /* if (screenPos.x > Screen.width + 250f || screenPos.x < -250f || screenPos.y > Screen.height || screenPos.y < 0)
-        {
-            Destroy(gameObject);
-        }*/
     }
 
-    public void Initialize(int a)
+    public void Initialize(int direction)
     {
         _currentHealth = StartingHealth;
         int speedMod = 1; //Speed modifier for later use
         dummy = GameObject.FindGameObjectWithTag("Player");
         speed = speed * speedMod;
-        direction = Vector3.left * a;
+        _direction = Vector3.left * direction;
 
 
-        int i = Random.Range(0, 2);
+        int i = 1;// Random.Range(0, 2);
         if (i == 0)
         {
             enemyBehaviour += WavyMove;
@@ -92,15 +83,20 @@ public class EnemyMovement : MonoBehaviour
 
     void HomingMove()
 	{
-		transform.position = Vector2.MoveTowards (transform.position, dummy.transform.position, speed); //Seeker, homes in on player
-		transform.position = Vector2.MoveTowards(transform.position, new Vector2(-10,0),0.01f);
-	}
+		transform.position = Vector2.MoveTowards (transform.position, dummy.transform.position, speed); //Seeker, homes in on player        
+        transform.position = Vector2.MoveTowards(transform.position, new Vector2(-10, 0), 0.01f);
+
+        // Rotate towards the player
+        Vector3 vectorToTarget = transform.position - dummy.transform.position;
+        float angle = Mathf.Atan(vectorToTarget.y/vectorToTarget.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
 
     void WavyMove()
     {
         number++;
         tempV.y = (5f * Mathf.Sin(number * 0.1f * Mathf.PI / 15) + 1f);
-        transform.Translate(direction * 0.05f);
+        transform.Translate(_direction * 0.05f);
         transform.position = new Vector3(transform.position.x, tempV.y);
     }
 

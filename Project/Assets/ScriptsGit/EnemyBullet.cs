@@ -69,8 +69,11 @@ public class EnemyBullet : MonoBehaviour
             {
                 transform.Rotate(Random.Range(160, 200), 0, 0);
                 this.gameObject.tag = "PlayerBullet";
-                gameObject.AddComponent<PlayerBullet>().DamageAmount = 50;
-                gameObject.GetComponent<PlayerBullet>().speed = 10;
+
+                var playerBullet = gameObject.AddComponent<PlayerBullet>();
+                playerBullet.DamageAmount = 50;
+                playerBullet.speed = 10;
+
                 gameObject.AddComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
                 Destroy(GetComponent<EnemyBullet>());
                 gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.green;
