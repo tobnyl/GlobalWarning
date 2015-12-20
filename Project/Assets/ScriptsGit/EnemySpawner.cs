@@ -10,8 +10,6 @@ public class EnemySpawner : MonoBehaviour
     {
         spawnTimer -= Time.deltaTime;
 
-        //Debug.Log("SpawnTimer: " + spawnTimer);
-
         if (spawnTimer <= 0)
         {
             SpawnEnemy();
@@ -40,8 +38,6 @@ public class EnemySpawner : MonoBehaviour
         enemy.SetActive(true); //Only used because prefab is inactive at the moment
         enemy.GetComponent<EnemyMovement>().Initialize(i);
         baseTime *= 0.98f;
-
-        Debug.Log("BaseTime: " + baseTime);
 
         if (baseTime > 0.5f)
         {

@@ -20,6 +20,7 @@ public class EnemyMovement : MonoBehaviour
 	Vector3 tempV;
 	float number = 0;	
 	private int _currentHealth;
+    private float _amplitude;
 
     delegate void EnemyBehaviour();
 	EnemyBehaviour enemyBehaviour;
@@ -49,9 +50,10 @@ public class EnemyMovement : MonoBehaviour
         _direction = Vector3.left * direction;
 
 
-        int i = 1;// Random.Range(0, 2);
+        int i = Random.Range(0, 2);
         if (i == 0)
         {
+            _amplitude = Random.Range(5f, 7f);
             enemyBehaviour += WavyMove;
             //enemyBehaviour += ShootHoming;
             enemyBehaviour += ShootRandom;
@@ -88,6 +90,7 @@ public class EnemyMovement : MonoBehaviour
 
         // Rotate towards the player
         Vector3 vectorToTarget = transform.position - dummy.transform.position;
+        Debug.Log(vectorToTarget);
         float angle = Mathf.Atan(vectorToTarget.y/vectorToTarget.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
@@ -95,7 +98,7 @@ public class EnemyMovement : MonoBehaviour
     void WavyMove()
     {
         number++;
-        tempV.y = (5f * Mathf.Sin(number * 0.1f * Mathf.PI / 15) + 1f);
+        tempV.y = (_amplitude * Mathf.Sin((number * 0.1f) / _amplitude) + 1f);
         transform.Translate(_direction * 0.05f);
         transform.position = new Vector3(transform.position.x, tempV.y);
     }
@@ -122,7 +125,11 @@ public class EnemyMovement : MonoBehaviour
 		if (coolDown <= 0) 
 		{
 			coolDown = 5f;
-            StartCoroutine(firingPattern());
+
+            if (firingPattern != null)
+            {
+                StartCoroutine(firingPattern());
+            }
 		}
 	}
 
