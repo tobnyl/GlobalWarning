@@ -57,6 +57,7 @@ public class EnemyMovement : MonoBehaviour
             enemyBehaviour += WavyMove;
             //enemyBehaviour += ShootHoming;
             enemyBehaviour += ShootRandom;
+
             int j = Random.Range(0, 3);
             switch (j)
             {
@@ -103,8 +104,6 @@ public class EnemyMovement : MonoBehaviour
         transform.position = new Vector3(transform.position.x, tempV.y);
     }
 
-
-
     void ShootHoming()
 	{
 		//Fires bullets, very dangerous
@@ -146,28 +145,6 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    IEnumerator NovaFire()
-    {
-        int i = 3;
-        int j = 36;
-        while (i > 0)
-        {
-            while (j > 0)
-            {
-                GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
-                bullet.GetComponent<EnemyBullet>().VolleyInitialize(dummy.transform.position + new Vector3(i, 0));
-                bullet.gameObject.transform.Rotate(10 * j, 0, 0);
-                j--;
-            }
-
-            AudioManager.Instance.EnemyShoot();
-
-            i--;
-            j = 36;
-            yield return new WaitForSeconds(0.2f);
-        }
-    }
-
     IEnumerator TracerFire()
     {
         int i = 6;
@@ -194,15 +171,16 @@ public class EnemyMovement : MonoBehaviour
     {
         int i = 500;
         int j = 1;
+
         while (i > 0)
         {
-            while (j > 0)
-            {
+            //while (j > 0)
+            //{
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
                 bullet.GetComponent<EnemyBullet>().VolleyInitialize(dummy.transform.position + new Vector3(i, 0));
                 bullet.gameObject.transform.Rotate(5 * i, 0, 0);
                 j--;
-            }
+            //}
             i--;
             j = 1;
             yield return new WaitForSeconds(0.001f);
@@ -213,12 +191,10 @@ public class EnemyMovement : MonoBehaviour
 	{
 		switch (co.gameObject.tag) {
 		    case "Player":
-		    {
-			    //Debug.Log ("Player got hit in 2D!");
+		    {			    
 			    Destroy (this.gameObject);
 
-		        var playerHealth = co.gameObject.GetComponent<PlayerHealth>();
-                playerHealth.TakeDamage(10);
+		        co.gameObject.GetComponent<PlayerHealth>().TakeDamage(10);
 
                 AudioManager.Instance.PlayerHit();
 
@@ -232,7 +208,6 @@ public class EnemyMovement : MonoBehaviour
             }
             case "Cannon":
 		    {
-			    //Debug.Log ("Cannon got hit in 2D!");
 			    Destroy (this.gameObject);
 
                 AudioManager.Instance.PlayerHit();
@@ -244,10 +219,8 @@ public class EnemyMovement : MonoBehaviour
 		    }
 		    case "PlayerBullet":
 		    {
-			    //Debug.Log ("Player hit enemy");
-			
-			    PlayerBullet playerBullet = co.gameObject.GetComponent<PlayerBullet> ();
-			    TakeDamage (playerBullet.DamageAmount);
+			    var playerBullet = co.gameObject.GetComponent<PlayerBullet>();
+			    TakeDamage(playerBullet.DamageAmount);
 
 		        StartCoroutine(Flash());
 
