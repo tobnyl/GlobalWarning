@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class EnemyMovement : MonoBehaviour
 {    
 	public GameObject bulletPrefab;
-	public GameObject volleyPrefab;
+	//public GameObject volleyPrefab;
     public int StartingHealth = 100;
     public Sprite alienSprite;
     public Sprite meleeSprite;
@@ -13,7 +13,7 @@ public class EnemyMovement : MonoBehaviour
     public int NumberFlashes = 2;
 
     private Vector3 _direction;
-    GameObject dummy; //Player
+    GameObject _player; //Player
     private float lifeTime = 20;
     float speed = 0.05f;
 	float coolDown = 1f;
@@ -45,7 +45,7 @@ public class EnemyMovement : MonoBehaviour
     {
         _currentHealth = StartingHealth;
         int speedMod = 1; //Speed modifier for later use
-        dummy = GameObject.FindGameObjectWithTag("Player");
+        _player = GameObject.FindGameObjectWithTag("Player");
         speed = speed * speedMod;
         _direction = Vector3.left * direction;
 
@@ -86,11 +86,11 @@ public class EnemyMovement : MonoBehaviour
 
     void HomingMove()
 	{
-		transform.position = Vector2.MoveTowards (transform.position, dummy.transform.position, speed); //Seeker, homes in on player        
+		transform.position = Vector2.MoveTowards (transform.position, _player.transform.position, speed); //Seeker, homes in on player        
         transform.position = Vector2.MoveTowards(transform.position, new Vector2(-10, 0), 0.01f);
 
         // Rotate towards the player
-        Vector3 vectorToTarget = transform.position - dummy.transform.position;
+        Vector3 vectorToTarget = transform.position - _player.transform.position;
         Debug.Log(vectorToTarget);
         float angle = Mathf.Atan(vectorToTarget.y/vectorToTarget.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -112,7 +112,7 @@ public class EnemyMovement : MonoBehaviour
 		{
 			coolDown = 1f;
 			GameObject bullet = Instantiate (bulletPrefab,transform.position,Quaternion.identity) as GameObject;
-			bullet.GetComponent<EnemyBullet>().Initialize(dummy);
+			bullet.GetComponent<EnemyBullet>().Initialize(_player);
 
             AudioManager.Instance.EnemyShoot();
         }
@@ -138,7 +138,7 @@ public class EnemyMovement : MonoBehaviour
         while (i > 0)
         {
             GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
-            bullet.GetComponent<EnemyBullet>().VolleyInitialize(dummy.transform.position + new Vector3((Random.Range(-5, 6)), Random.Range(-5, 6)));
+            bullet.GetComponent<EnemyBullet>().VolleyInitialize(_player.transform.position + new Vector3((Random.Range(-5, 6)), Random.Range(-5, 6)));
             AudioManager.Instance.EnemyShoot();
             i--;
             yield return new WaitForSeconds(0.1f);
@@ -154,7 +154,7 @@ public class EnemyMovement : MonoBehaviour
             while (j > 0)
             {
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
-                bullet.GetComponent<EnemyBullet>().VolleyInitialize(dummy.transform.position + new Vector3(i, 0));
+                bullet.GetComponent<EnemyBullet>().VolleyInitialize(_player.transform.position + new Vector3(i, 0));
                 bullet.gameObject.transform.Rotate(10 * j, 0, 0);
                 j--;
             }
@@ -177,7 +177,7 @@ public class EnemyMovement : MonoBehaviour
             //while (j > 0)
             //{
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
-                bullet.GetComponent<EnemyBullet>().VolleyInitialize(dummy.transform.position + new Vector3(i, 0));
+                bullet.GetComponent<EnemyBullet>().VolleyInitialize(_player.transform.position + new Vector3(i, 0));
                 bullet.gameObject.transform.Rotate(5 * i, 0, 0);
                 j--;
             //}
