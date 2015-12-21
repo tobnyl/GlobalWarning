@@ -22,7 +22,6 @@ public class EnemyBullet : MonoBehaviour
 
 	public void VolleyInitialize(Vector3 target)
 	{
-        Debug.Log(target);
 		speed = 5f;
 		gameObject.SetActive(true);
 		transform.LookAt (target);

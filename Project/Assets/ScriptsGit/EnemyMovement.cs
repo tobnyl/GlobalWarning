@@ -91,7 +91,6 @@ public class EnemyMovement : MonoBehaviour
 
         // Rotate towards the player
         Vector3 vectorToTarget = transform.position - _player.transform.position;
-        Debug.Log(vectorToTarget);
         float angle = Mathf.Atan(vectorToTarget.y/vectorToTarget.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
